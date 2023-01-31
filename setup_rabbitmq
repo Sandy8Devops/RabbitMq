@@ -1,0 +1,33 @@
+https://www.cherryservers.com/blog/how-to-install-and-start-using-rabbitmq-on-ubuntu-22-04
+
+Step 1 (install)
+$sudo apt install rabbitmq-server
+
+Step 2 (status check)
+devops@devops:~$ systemctl status rabbitmq-server.service
+● rabbitmq-server.service - RabbitMQ Messaging Server
+     Loaded: loaded (/lib/systemd/system/rabbitmq-server.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2023-01-31 15:06:15 CST; 18s ago
+   Main PID: 3060 (beam.smp)
+      Tasks: 21 (limit: 2288)
+     Memory: 83.8M
+        CPU: 8.114s
+     CGroup: /system.slice/rabbitmq-server.service
+             ├─3060 /usr/lib/erlang/erts-12.2.1/bin/beam.smp -W w -MBas ageffcbf -MHas ageffcbf -MBlmbcs 512 -MHlmbcs 512 -MMmcs 30 -P 10485>
+             ├─3071 erl_child_setup 65536
+             ├─3119 inet_gethost 4
+             └─3120 inet_gethost 4
+
+Check status
+$ systemctl is-enabled rabbitmq-server.service 
+
+$ sudo ss -tunelp | grep 15672
+tcp   LISTEN  0       128                    0.0.0.0:15672        0.0.0.0:*      users:(("beam.smp",pid=9525,fd=71)) uid:111 ino:39934 sk:9 <->
+If you have an active UFW firewall, open both ports 5672 and 15672:
+
+$sudo ufw allow proto tcp from any to any port 5672,15672
+
+Check on UI
+--------
+http://192.168.1.95:15672/#/users is working..
+
